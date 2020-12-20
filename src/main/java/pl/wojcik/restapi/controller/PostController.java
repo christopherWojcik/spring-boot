@@ -2,6 +2,8 @@ package pl.wojcik.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.wojcik.restapi.model.Post;
 import pl.wojcik.restapi.model.dto.PostDto;
@@ -17,7 +19,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/posts")
-    public List<PostDto> getPosts(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public List<PostDto> getPosts(@RequestParam(required = false) Integer page, Sort.Direction sort,
+                                  @AuthenticationPrincipal UsernamePasswordAuthenticationToken user) {
+        // TODO:
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         return PostDtoMapper.mapToPostDtos(postService.getPosts(pageNumber, sortDirection));
