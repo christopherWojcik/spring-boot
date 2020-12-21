@@ -53,4 +53,9 @@ public class PostController {
     public void deletePost(@PathVariable long id){
         postService.deletePost(id);
     }
+
+    @GetMapping("/posts/cacheEvict")
+    public void deleteCache(){
+        postService.clearPostsWithComments();
+    }
 }

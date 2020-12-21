@@ -1,6 +1,9 @@
 package pl.wojcik.restapi.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -27,11 +30,13 @@ public class PostService {
                         Sort.by(sort, "id")));
     }
 
+    @Cacheable(cacheNames = "SinglePost", key = "#id")
     public Post getSinglePost(long id) {
         return postRepository.findById(id)
                 .orElseThrow();
     }
 
+    @Cacheable(cacheNames = "PostWithComments")
     public List<Post> getPostsWithComments(int page, Sort.Direction sort) {
         List<Post> allPosts = postRepository.findAllPosts(
                 PageRequest.of(page, PAGE_SIZE,
@@ -58,6 +63,14 @@ public class PostService {
     }
 
     @Transactional
+    @CachePut(cacheNames = "SinglePost", key = "#result.id")
+    /*
+        @CachePut(cacheNames = "SinglePost", key = "#result.id")
+        every method calls, the result is saved/reloaded to the cache
+        key - must be set, by default is method parameter - post
+        key = "#result.id" - result is what the method returns
+
+     */
     public Post editPost(Post post) {
         Post postEdited = postRepository.findById(post.getId()).orElseThrow();
         postEdited.setTitle(post.getTitle());
@@ -65,8 +78,17 @@ public class PostService {
         return postEdited;
     }
 
+    @CacheEvict(cacheNames = "SinglePost")
+    /*
+        this annotation delete post from Cache - every method calls
+     */
     public void deletePost(long id) {
         postRepository.deleteById(id);
+    }
+
+    @CacheEvict(cacheNames = "PostWithComments")
+    public void clearPostsWithComments(){
+        // must be called from another Bean, not from the same where it is
     }
 
 }
