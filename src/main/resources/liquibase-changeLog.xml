@@ -1,0 +1,29 @@
+<?xml version ="1.0" encoding ="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+                            http://www.liquibase.org/xml/ns/pro
+                            http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+    <!--    first way of creating changeSet - -->
+    <!--    <changeSet id="create_post" author="chris">-->
+    <!--        <createTable tableName="post">-->
+    <!--            <column name="id" autoIncrement="true"/>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
+
+
+    <!--    file formats: xml, json, yml (abstraction types) - can be run on different DBs-->
+    <!--    file format: sql - dedicated to one type of DB-->
+
+    <!--    second way - loading data from single file-->
+    <!--    <include file="database.xml"/>-->
+    <!--    <include file="database.sql"/>-->
+
+    <includeAll path="database"/>
+
+
+</databaseChangeLog>

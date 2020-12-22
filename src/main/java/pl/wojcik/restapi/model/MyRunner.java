@@ -1,5 +1,6 @@
 package pl.wojcik.restapi.model;
 
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,15 @@ import pl.wojcik.restapi.repository.PostRepository;
 
 
 @Component
+@AllArgsConstructor
 public class MyRunner implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(MyRunner.class);
-
-    @Autowired
     PostRepository postRepository;
-    @Autowired
     CommentRepository commentRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        logger.info("Init posts in DB.");
-        logger.info("Init comments in DB.");
-        logger.info("RUNNER :: Runner is working.");
+
     }
 }
